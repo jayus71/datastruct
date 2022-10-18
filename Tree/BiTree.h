@@ -15,9 +15,18 @@ typedef struct BiNode {
 typedef struct {
     BiTree t;
     int tag;
-}TreeStack;
+} TreeStack;
+
 BiTree PreInCreat(char A[], char B[], int l1, int h1, int l2, int h2);
+
 ELemType FINDK(BiTree P, int k);
+
 int DeleteTree(BiTree &T);
+
 int SearchNodesByElem(BiTree T, ELemType x);
+
+int WidthOfBiTree(BiTree T);
+
+int levelOrder_Depth(BiTree T);
+
 #endif //DATASTRUCT_BITREE_H

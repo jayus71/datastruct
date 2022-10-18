@@ -169,13 +169,165 @@ BiNode *ANCESTOR(BiTree T, BiNode *p, BiNode *q){
             }
         }
     }
-    int top = topP>topQ?topQ:topP;
-    if(top!= 0){
+    int top = topP > topQ ? topQ : topP;
+    if (top != 0) {
         for (int j = top; j > 0; --j) {
-            if(sp[top].t == sq[top].t)
+            if (sp[top].t == sq[top].t)
                 return sp[top].t;
         }
     }
     return NULL;
 }
 
+/**
+   利用层次遍历求高度
+**/
+int levelOrder_Depth(BiTree T) {
+    if (T == NULL)
+        return 0;
+    SeqQueue q;
+    BiTree p = T;
+    BiNode *last = T;
+    int depth = 0;
+    InitQueue(q);
+    EnQueue(q, T);
+
+    while (!IsQueueEmpty(q)) {
+        DeQueue(q, p);
+        //visit(p);
+        if (!p->lchild) {
+            EnQueue(q, p->lchild);
+        }
+        if (!p->rchild) {
+            EnQueue(q, p->rchild);
+        }
+        if (p == last) {
+            depth++;
+            last = p->rchild;
+        }
+    }
+
+    return depth;
+}
+
+int getStackSize(SqStack s) {
+    return s.size;
+}
+
+/**
+    利用非递归后序遍历求二叉树高度
+--------------------------
+**/
+int postOrderLeve(BiTree T) {
+    if (T == NULL)
+        return 0;
+    SqStack s;
+    BiNode *pre = NULL;
+    BiTree p = T;
+    int max = 1, depth;
+
+    while (p || !IsStackEmpty(s)) {
+        if (p) {
+            Push(s, p);
+            p = p->lchild;
+        } else {
+            GetTop(s, p);
+            if (p->rchild && p->rchild != pre) {
+                Push(s, p);
+                p = p->rchild;
+            } else {
+                Pop(s, p);
+                depth = getStackSize(s);
+                if (depth > max)
+                    max = depth;
+                pre = p;
+                p = NULL;
+            }
+        }
+    }
+    return max;
+}
+
+/**
+ * 层次遍历求非空二叉树的宽度
+ * @param T 二叉树的根结点
+ * @return 二叉树宽度
+ */
+int WidthOfBiTree(BiTree T) {
+    BiTree Q[MAXSIZE];
+    int front = 0, rear = 0;
+    BiNode *p = T;
+    BiNode *last = p;
+    int MaxWidth = 0, tempWidth = 0;
+
+    if (!T) {
+        printf("空树");
+        return 0;
+    }
+    Q[rear] = T;
+    rear = (rear + 1) % MAXSIZE;
+
+    while (front != rear) {
+        p = Q[front];
+        front = (front + 1) % MAXSIZE;
+        tempWidth++;
+
+        if (p == last) {
+            last = p->rchild;
+            if (tempWidth > MaxWidth)
+                MaxWidth = tempWidth;
+            tempWidth = 0;
+        }
+
+        //左右子树入队
+        if (p->lchild) {
+            Q[rear] = p->lchild;
+            rear = (rear + 1) % MAXSIZE;
+        }
+        if (p->rchild) {
+            Q[rear] = p->rchild;
+            rear = (rear + 1) % MAXSIZE;
+        }
+    }
+    return MaxWidth;
+}
+
+int WidthOfBiTree_1(BiTree T) {
+    BiTree Q[MAXSIZE];
+    int front = 0, rear = 0;
+    int width = 1; //最大宽度
+    int level = 1;
+    int max_Level = 1;//最大宽度层次
+    BiNode *p = T;
+    int len = 1; //上层队列长度
+
+    Q[rear] = T;
+    rear = (rear + 1) % MAXSIZE;
+    while (rear != front) {
+        p = Q[front];
+        front = (front + 1) % MAXSIZE;
+        len--;
+        //左右子树入队
+        if (p->lchild) {
+            Q[rear] = p->lchild;
+            rear = (rear + 1) % MAXSIZE;
+        }
+        if (p->rchild) {
+            Q[rear] = p->rchild;
+            rear = (rear + 1) % MAXSIZE;
+        }
+
+        //长度为0说明此时本层结点遍历完毕，
+        //需要进入下层，而此时队列中元素个数即为下层元素个数
+        if (len == 0) {
+            len = (rear - front + MAXSIZE) % MAXSIZE;
+            level++;
+            if (len > width) {
+                width = len;
+                max_Level = i;
+            }
+        }
+    }
+    printf("最大宽度所在层次：%d", max_Level);
+    return width;
+}
