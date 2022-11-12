@@ -15,7 +15,7 @@ typedef struct BiNode {
 
 typedef struct {
     BiTree t;
-    int tag;
+    int tag; // tag=0 表示左子树被访问，tag=1表示右子树被访问
 } TreeStack;
 
 BiTree PreInCreat(char A[], char B[], int l1, int h1, int l2, int h2);

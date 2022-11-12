@@ -33,10 +33,10 @@ ElemType FINDK(BiTree P, int k) {
     i++;
     if (i == k)
         return P->data;
-    ch = FINDK(P->lchild, 4); //以上即为前序遍历中visit()部分，下面是造前序部分
-    if (ch != '#')              //当ch不再是#说明找到想要的数据了，但现在在本层的ch这，要把他传上去，现在是传递链的一环
+    ch = FINDK(P->lchild, k);
+    if (ch != '#')
         return ch;
-    ch = FINDK(P->rchild, 4); //所找结点的父亲结点接受数据时要用到这条语句，如本题中的B结点
+    ch = FINDK(P->rchild, k);
     return ch;
 }
 
@@ -90,6 +90,13 @@ int SearchNodesByElem(BiTree T, ElemType x) {
     }
 }
 
+/**
+ * 非递归后序遍历的应用，当遍历到某个结点p时，
+ * 栈中的所有结点即为p的祖先
+ * @param T 二叉树
+ * @param x 待寻找结点数据
+ * @return 是否成功
+ */
 int PostOrderFindAncestors(BiTree T, ElemType x) {
     if (T == NULL)
         return 0;
@@ -99,18 +106,18 @@ int PostOrderFindAncestors(BiTree T, ElemType x) {
     while (p || top != 0) {
         while (p && p->data != x) {
             s[top].t = p;
-            s[top].tag = 0;
+            s[top].tag = 0; // 访问了左子树
             top++;
             p = p->lchild;
         }
         if(p && p->data == x){
             printf("该结点的所有祖先为：");
-            for (int j = top; j < 0; --j) {
-                printf("%c",s[j].t->data);
+            for (int j = 0; j < top; ++j) {
+                printf("%c", s[j].t->data);
             }
             return 1;
         }
-        while(top != 0 && s[top].tag == 1)
+        while (top != 0 && s[top].tag == 1) //本题只需找到值为x的结点，所以右子树访问过的结点也即后序遍历完成，可以直接退栈
             top--;
         if (top!= 0){
             p = s[top].t->rchild;
@@ -180,8 +187,10 @@ BiNode *ANCESTOR(BiTree T, BiNode *p, BiNode *q){
 }
 
 /**
-   利用层次遍历求高度
-**/
+ * 利用层次遍历求高度
+ * @param T 二叉树
+ * @return 高度
+ */
 int levelOrder_Depth(BiTree T) {
     if (T == NULL)
         return 0;
@@ -215,9 +224,10 @@ int getStackSize(SqStack s) {
 }
 
 /**
-    利用非递归后序遍历求二叉树高度
---------------------------
-**/
+ * 利用非递归后序遍历求二叉树高度
+ * @param T 二叉树
+ * @return 二叉树高度
+ */
 int postOrderLeve(BiTree T) {
     if (T == NULL)
         return 0;
@@ -257,8 +267,8 @@ int WidthOfBiTree(BiTree T) {
     BiTree Q[MAXSIZE];
     int front = 0, rear = 0;
     BiNode *p = T;
-    BiNode *last = p;
-    int MaxWidth = 0, tempWidth = 0;
+    BiNode *last = p;  // 记录每一层遍历的最后一个结点
+    int MaxWidth = 1, tempWidth = 0;
 
     if (!T) {
         printf("空树");
@@ -272,13 +282,13 @@ int WidthOfBiTree(BiTree T) {
         front = (front + 1) % MAXSIZE;
         tempWidth++;
 
+        // 当前结点就是本层最后一个结点，说明该层结点已经全部处理完毕
         if (p == last) {
             last = p->rchild;
             if (tempWidth > MaxWidth)
                 MaxWidth = tempWidth;
             tempWidth = 0;
         }
-
         //左右子树入队
         if (p->lchild) {
             Q[rear] = p->lchild;
@@ -292,6 +302,13 @@ int WidthOfBiTree(BiTree T) {
     return MaxWidth;
 }
 
+/**
+ * 层次遍历求宽度
+ * 用len记录上层结点遍历完成时，即下一层结点全部进入队列
+ * 此时的队列的长度即为下一层的宽度，比较得出最大宽度
+ * @param T
+ * @return
+ */
 int WidthOfBiTree_1(BiTree T) {
     BiTree Q[MAXSIZE];
     int front = 0, rear = 0;
