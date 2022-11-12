@@ -3,7 +3,7 @@
 //
 
 #include "sort.h"
-#include "../list/LinkList.h"
+
 
 /**
  * 双向冒泡排序
@@ -273,4 +273,110 @@ bool IsMinHeap(ElemType A[], int len) {
         }
     }
     return true;
+}
+
+/**
+ * 归并排序思想排序
+ * @param A 待排序数组
+ * @param m 第一个有序子序列上界
+ * @param n 第二个有序子序列上界
+ */
+void Sort_MN(ElemType A[], int m, int n) {
+    int i = 1, j = m + 1, k = 1;
+    //Merge(A,1,m,m+n);
+    auto *B = (ElemType *) malloc(sizeof(ElemType) * (m + n));
+    for (int l = 1; l <= m + n; ++l) {
+        B[l] = A[l];
+    }
+    while (i <= m && j <= m + n) {
+        if (B[i] < B[j]) {
+            A[k] = B[i++];
+        } else {
+            A[k] = B[j++];
+        }
+        k++;
+    }
+    while (i <= m)
+        A[k++] = A[i++];
+    while (j <= m + n)
+        A[k++] = A[j++];
+}
+
+/**
+ * 计数排序
+ * @param A 原数组
+ * @param len 长度
+ * @return 排序后的数组
+ */
+ElemType *CountSort(ElemType A[], int len) {
+    auto list = (ElemType *) malloc(len * sizeof(ElemType));
+    int count = 0;
+    for (int i = 0; i < len; ++i) {
+        count = 0;
+        //注意j应该从0开始，是在整个序列中的位置，前i个和之后的先后顺序未知
+        for (int j = 0; j < len; ++j) {
+            if (A[j] < A[i])
+                count++;
+        }
+        list[count] = A[i];
+    }
+    return list;
+}
+
+
+/**
+ * 在上述计数排序中，如果要求两两之间只能比较一次，
+ * 则需要修改成如下代码
+ * @param A
+ * @param len
+ * @return
+ */
+typedef struct countSort {
+    ElemType data;
+    int count;
+} countSort;
+
+countSort *CountSort(countSort A[], int len) {
+    auto list = (countSort *) malloc(len * sizeof(countSort));
+    for (int i = 0; i < len; ++i) {
+        A[i].count = 0;
+    }
+    for (int i = 0; i < len; ++i) {
+        for (int j = i + 1; j < len; ++j) {
+            if (A[i].count > A[j].count)
+                A[i].count++;
+            else {
+                A[j].count++;
+            }
+        }
+    }
+    for (int i = 0; i < len; ++i) {
+        list[A[i].count] = A[i];
+    }
+    return list;
+}
+
+//数据结构P360 04
+/**
+ * 题目中只需要将最后一个元素放到最终位置
+ * 且要求比较次数，则只需以Kn为枢纽，进行一次快速排序
+ * @param A 待排序数组
+ * @param n 数组长度
+ * @return 枢纽（Kn）最后所在位置
+ */
+int SetK_nByOrder(ElemType A[], int n) {
+    int low = 0, high = n - 1;
+    ElemType pivot;
+    swap(A[low], A[high]);
+    pivot = A[low];
+    while (low < high) {
+        while (low < high && A[high] >= pivot)
+            high--;
+        A[low] = A[high];
+        while (low < high && A[low] <= pivot)
+            low++;
+        A[high] = A[low];
+    }
+    A[low] = pivot;
+    return low;
 }

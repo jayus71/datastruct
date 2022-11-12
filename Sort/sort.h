@@ -6,6 +6,7 @@
 #define DATASTRUCT_SORT_H
 
 #include "../base.h"
+#include "../list/LinkList.h"
 
 void InsertSort(ElemType A[], int n);
 
@@ -17,6 +18,16 @@ void QuickSort(ElemType A[], int low, int high);
 
 int Partition_Random(ElemType A[], int low, int high);
 
+void HeapAdjust(ElemType A[], int key, int len);
+
+void BuildMaxHeap(ElemType A[], int len);
+
+void HeapSort(ElemType A[], int len);
+
+void Merge(ElemType A[], int low, int mid, int high);
+
+void MergeSort(ElemType A[], int low, int high);
+
 void doubleBubbleSort(ElemType A[], int n);
 
 bool sortByOdd(ElemType A[], int n);
@@ -27,13 +38,13 @@ void DutchFlag(ElemType array[], int n);
 
 int SumPartition(ElemType A[], int n);
 
-void HeapAdjust(ElemType A[], int key, int len);
+LinkList LinkedSelectSort_Swap(LinkList L);
 
-void BuildMaxHeap(ElemType A[], int len);
+void LinkedSelectSort_Insert(LinkList &L);
 
-void HeapSort(ElemType A[], int len);
+bool IsMinHeap(ElemType A[], int len);
 
-void Merge(ElemType A[], int low, int mid, int high);
+void Sort_MN(ElemType A[], int m, int n);
 
 #endif //DATASTRUCT_SORT_H
 

@@ -217,3 +217,7 @@ void MergeSort(ElemType A[], int low, int high) {
         Merge(A, low, mid, high);  // 将两个有序序列合并为一个有序序列
     }
 }
+
+void CountSort(ElemType A[]) {
+
+}
