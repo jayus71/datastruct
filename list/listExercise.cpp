@@ -188,6 +188,7 @@ char preOrderFind(BiTree T, int k) {
     return ch;
 }
 
+//错误！
 char wrFind(BiTree T,int k) {
     if(T){
         j++;

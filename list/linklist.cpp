@@ -1,13 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef int ElemType;
-
-typedef struct LNode
-{
-    int data;
-    struct LNode *next;
-}LNode, *LinkList;
+#include "LinkList.h"
 
 
 /**

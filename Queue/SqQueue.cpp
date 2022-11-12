@@ -13,18 +13,18 @@ bool IsQueueFull(SeqQueue Q){
     return (Q.rear+1)%MAXSIZE == Q.front;
 }
 
-bool EnQueue(SeqQueue &Q,ELemType x){
-    if(IsQueueFull(Q))
+bool EnQueue(SeqQueue &Q, ElemType x) {
+    if (IsQueueFull(Q))
         return false;
     Q.data[Q.rear] = x;
-    Q.rear = (Q.rear+1)%MAXSIZE;
+    Q.rear = (Q.rear + 1) % MAXSIZE;
     return true;
 }
 
-bool Dequeue(SeqQueue &Q,ELemType &x){
-    if(IsQueueEmpty(Q))
+bool Dequeue(SeqQueue &Q, ElemType &x) {
+    if (IsQueueEmpty(Q))
         return false;
     x = Q.data[Q.front];
-    Q.front = (Q.front+1)%MAXSIZE;
+    Q.front = (Q.front + 1) % MAXSIZE;
     return true;
 }

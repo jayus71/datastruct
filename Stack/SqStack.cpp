@@ -17,7 +17,7 @@ bool IsStackFull(SqStack s) {
     return s.size == MAXSIZE;
 }
 
-bool Push(SqStack &sqStack, ELemType x) {
+bool Push(SqStack &sqStack, ElemType x) {
     if (IsStackFull(sqStack))
         return false;
     sqStack.data[sqStack.top] = x;
@@ -25,7 +25,7 @@ bool Push(SqStack &sqStack, ELemType x) {
     return true;
 }
 
-bool Pop(SqStack &sqStack, ELemType &x) {
+bool Pop(SqStack &sqStack, ElemType &x) {
     if (IsStackEmpty(sqStack))
         return false;
     sqStack.top--;

@@ -24,8 +24,8 @@ BiTree PreInCreat(char A[], char B[], int l1, int h1, int l2, int h2) { //创建
     return root;
 }
 int i = 0;
-ELemType FINDK(BiTree P, int k) {
-    ELemType ch;
+ElemType FINDK(BiTree P, int k) {
+    ElemType ch;
     if (P == NULL) {
         //printf("NULL the times of return: %d\n", i);
         return '#';
@@ -50,15 +50,15 @@ int DeleteTree(BiTree &T){
     return 0;
 }
 
-int SearchNodesByElem(BiTree T, ELemType x){
-    if (T){
-        if(T->data == x){
+int SearchNodesByElem(BiTree T, ElemType x) {
+    if (T) {
+        if (T->data == x) {
             DeleteTree(T);
             return 1;
         }
         BiTree Q[MAXSIZE];
         BiTree p;
-        int front,rear;
+        int front, rear;
         front = rear = 0;
         Q[rear] = T;
         rear = (rear + 1)%MAXSIZE;
@@ -90,17 +90,17 @@ int SearchNodesByElem(BiTree T, ELemType x){
     }
 }
 
-int PostOrderFindAncestors(BiTree T,ELemType x){
-    if(T == NULL)
+int PostOrderFindAncestors(BiTree T, ElemType x) {
+    if (T == NULL)
         return 0;
     TreeStack s[MAXSIZE];
     int top = 0;
     BiTree p = T;
-    while (p || top != 0){
-        while (p && p->data != x){
+    while (p || top != 0) {
+        while (p && p->data != x) {
             s[top].t = p;
             s[top].tag = 0;
-            top ++;
+            top++;
             p = p->lchild;
         }
         if(p && p->data == x){
@@ -330,4 +330,60 @@ int WidthOfBiTree_1(BiTree T) {
     }
     printf("最大宽度所在层次：%d", max_Level);
     return width;
+}
+
+/**
+ * 判断给定二叉排序树是否为平衡二叉树
+ * @param T 待判断二叉树
+ * @param BstTag 引用型变量，是否为平衡二叉树，1：是，0：否
+ * @param h 引用型变量，待判断树高度
+ */
+void IsBalanceBst(BiTree T, int &BstTag, int &h) {
+    if (T == NULL) {
+        BstTag = 1;
+        h = 0;
+        return;
+    } else if (T->lchild == NULL && T->rchild == NULL) {
+        BstTag = 1;
+        h = 1;
+        return;
+    } else {
+        int btl = 0, btr = 0, lh = 0, rh = 0;
+        IsBalanceBst(T->lchild, btl, lh);
+        IsBalanceBst(T->lchild, btr, rh);
+        h = lh > rh ? lh : rh;
+        if (abs(lh - rh) <= 2) {
+            BstTag = btl && btr;
+        } else
+            BstTag = 0;
+        return;
+    }
+}
+
+/**
+ * 返回二叉排序树中从小到大第k个结点
+ * 在BiNode中增加了count，记录子树上的结点总个数
+ * @param T 给定二叉排序树
+ * @param k
+ * @return
+ */
+BiNode *FindByOrder(BiTree T, int k) {
+    //空树或顺序不合法
+    if (T == nullptr || k < 1)
+        return nullptr;
+    //左子树为空
+    if (T->lchild == nullptr) {
+        if (k == 1)
+            return T;
+        else
+            return FindByOrder(T->rchild, k - 1);
+    } else {
+        if (T->lchild->count == k - 1)
+            return T;
+            //左子树结点个数大于k-1，一定在左子树中
+        else if (T->lchild->count > k - 1)
+            return FindByOrder(T->lchild, k);
+        else
+            return FindByOrder(T->rchild, k - 1 - T->lchild->count);
+    }
 }

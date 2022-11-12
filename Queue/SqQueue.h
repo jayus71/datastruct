@@ -9,7 +9,7 @@
 #include "../Tree/BiTree.h"
 
 typedef struct {
-    ELemType data[MAXSIZE];
+    ElemType data[MAXSIZE];
     int rear, front;
 } SeqQueue;
 
@@ -19,9 +19,9 @@ bool IsQueueEmpty(SeqQueue Q);
 
 bool IsQueueFull(SeqQueue Q);
 
-bool EnQueue(SeqQueue &Q, ELemType x);
+bool EnQueue(SeqQueue &Q, ElemType x);
 
-bool DeQueue(SeqQueue &Q, ELemType &x);
+bool DeQueue(SeqQueue &Q, ElemType &x);
 
 bool EnQueue(SeqQueue &Q, BiTree x);
 

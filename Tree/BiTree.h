@@ -8,7 +8,8 @@
 #include "../base.h"
 
 typedef struct BiNode {
-    ELemType data;
+    ElemType data;
+    int count; // 该子树结点总数
     struct BiNode *lchild, *rchild;
 } BiNode, *BiTree;
 
@@ -19,14 +20,15 @@ typedef struct {
 
 BiTree PreInCreat(char A[], char B[], int l1, int h1, int l2, int h2);
 
-ELemType FINDK(BiTree P, int k);
+ElemType FINDK(BiTree P, int k);
 
 int DeleteTree(BiTree &T);
 
-int SearchNodesByElem(BiTree T, ELemType x);
+int SearchNodesByElem(BiTree T, ElemType x);
 
 int WidthOfBiTree(BiTree T);
 
 int levelOrder_Depth(BiTree T);
 
+void IsBalanceBst(BiTree T, int &BstTag, int &h);
 #endif //DATASTRUCT_BITREE_H

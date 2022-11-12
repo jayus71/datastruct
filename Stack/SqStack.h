@@ -6,19 +6,30 @@
 #define DATASTRUCT_SQSTACK_H
 #include "../base.h"
 #include "../Tree/BiTree.h"
+
 typedef struct {
-    ELemType data[MAXSIZE];
+    ElemType data[MAXSIZE];
     int top;
     int size;
-}SqStack;
+} SqStack;
+
 void InitStack(SqStack &s);
+
 bool IsStackEmpty(SqStack s);
+
 bool IsStackFull(SqStack s);
-bool Push(SqStack &s,ELemType x);
-bool Pop(SqStack &s, ELemType &x);
-bool GetTop(SqStack s, ELemType &x);
+
+bool Push(SqStack &s, ElemType x);
+
+bool Pop(SqStack &s, ElemType &x);
+
+bool GetTop(SqStack s, ElemType &x);
+
 //----------------------------------------------
-bool Push(SqStack &s,BiTree x);
+bool Push(SqStack &s, BiTree x);
+
 bool Pop(SqStack &s, BiTree &x);
+
 bool GetTop(SqStack s, BiTree &x);
+
 #endif //DATASTRUCT_SQSTACK_H
