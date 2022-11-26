@@ -1,10 +1,15 @@
 //
 // Created by Jayus on 2022/10/10.
 //
-
+//#include <string> //假如我把#include <string>放到#include <vector>之后，就会报错，错误原因未知
 #include "BiTree.h"
 #include "../Queue/SqQueue.h"
 #include "../Stack/SqStack.h"
+//#include <vector>
+
+
+using namespace std;
+
 BiTree PreInCreat(char A[], char B[], int l1, int h1, int l2, int h2) { //创建二叉树
     int i, llen, rlen;
     BiTree root;
@@ -341,7 +346,7 @@ int WidthOfBiTree_1(BiTree T) {
             level++;
             if (len > width) {
                 width = len;
-                max_Level = i;
+                max_Level = level;
             }
         }
     }
@@ -403,4 +408,48 @@ BiNode *FindByOrder(BiTree T, int k) {
         else
             return FindByOrder(T->rchild, k - 1 - T->lchild->count);
     }
+}
+
+#include <string>
+#include <vector>
+#include <queue>
+
+/**
+ * 使用c++自带的stl寻找二叉树的所有路径
+ * @param root 二叉树根结点
+ * @return 返回包含所有路径的向量
+ */
+vector<string> BiTreePath(BiTree root) {
+    vector<string> paths;
+    if (root == nullptr) {
+        return paths;
+    }
+    queue<BiNode *> node_queue;
+    queue<string> path_queue;
+
+    node_queue.push(root);
+    path_queue.push(to_string(root->data));
+
+    //基于层次遍历
+    while (!node_queue.empty()) {
+        BiNode *node = node_queue.front();
+        string path = path_queue.front();
+        node_queue.pop();
+        path_queue.pop();
+        //到达叶结点，路径也到达终点，可以直接加入结果向量
+        if (node->lchild == nullptr && node->rchild == nullptr) {
+            paths.push_back(path);
+        } else {
+            //处理分支结点
+            if (node->lchild) {
+                node_queue.push(node->lchild);
+                path_queue.push(path + "->" + to_string(node->lchild->data));
+            }
+            if (node->rchild) {
+                node_queue.push((node->rchild));
+                path_queue.push(path + "->" + to_string(node->rchild->data));
+            }
+        }
+    }
+    return paths;
 }

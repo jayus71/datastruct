@@ -2,7 +2,7 @@
 // Created by Jayus on 2022/10/1.
 //
 
-#include "listExercise.h"
+#include "LinkList.h"
 #include "seqList.h"
 #include <stdlib.h>
 #include <cstdio>
@@ -101,6 +101,158 @@ int delByrange(seqList &L, ElemType s, ElemType t) {
     return 0;
 }
 
+/**
+ * 找到链表中倒数第k个结点，有头结点
+ * @param L 链表头指针
+ * @param k 要寻找的倒数第k个
+ * @return 找到则返回对应结点指针，否则为nullptr
+ */
+LNode *Find_k(LinkList L, int k) {
+    if (L == nullptr)
+        return nullptr;
+    LNode *p, *q;
+    int count = 0;
+    p = q = L->next;
+    while (p != nullptr) {
+        if (count == k)
+            q = q->next;
+        else
+            count++;
+        p = p->next;
+    }
+    if (count == k)
+        return q;
+    else
+        return nullptr;
+}
+
+/**
+ * 递归删除链表中值为x的结点
+ * @param L 待删除链表头指针，没有头结点
+ * @param x 待删除数据
+ */
+void DeleByElem_recur(LinkList &L, ElemType x) {
+    if (L == nullptr)
+        return;
+    else if (L->data == x) {
+        LNode *p = L;
+        L = L->next;
+        free(p);
+        DeleByElem_recur(L->next, x);
+    } else
+        DeleByElem_recur(L->next, x);
+}
+
+/**
+ * 在无序单链表中删除值为x的结点
+ * @param L 待处理单链表，有头结点
+ * @param x 删除的值
+ */
+void DeleteLinkListByElem(LinkList L, ElemType x) {
+    if (L == nullptr)
+        return;
+    LNode *pre, *p;  //前驱指针和工作指针
+    LNode *q; //用于删除结点
+
+    pre = L;
+    p = L->next;
+    while (p) {
+        if (p->data == x) {
+            pre->next = p->next;
+            q = p;
+            p = p->next;
+            free(q);
+            q = nullptr;
+        } else {
+            pre = p;
+            p = p->next;
+        }
+    }
+}
+
+/**
+ * 头插法建立新链表的方法删除，当值为x时删除该结点，否则加入“新链表”
+ * @param L 待处理链表头指针，有头结点
+ * @param x 待删除值
+ */
+void DeleteLinkListByElem_2(LinkList L, ElemType x) {
+    if (L == nullptr)
+        return;
+    LNode *pre, *p;
+    LNode *q;
+    pre = L;
+    p = L->next;
+    pre->next = nullptr;
+
+    while (p) {
+        if (p->data == x) {
+            q = p;
+            p = p->next;
+            free(q);
+            q = nullptr;
+        } else {
+            pre->next = p;
+            pre = p;
+            p = p->next;
+        }
+    }
+    pre->next = nullptr;
+}
+
+/**
+ * a中连续的相等元素构成的子序列称为平台。
+ * 找出 a 中最长平台的长度。
+ * @param a 待处理数组
+ * @param n 数组长度
+ * @return 最长平台长度
+ */
+int getMaxLength(int a[], int n) {
+    if (n == 0)
+        return 0;
+    int maxlen = 1, len = 1;
+    int start = 0;
+    for (int i = 1; i < n; i++) {
+        if (a[i] == a[start])
+            len++;
+        else {
+            if (maxlen < len)
+                maxlen = len;
+            start = i;
+            len = 1;
+        }
+    }
+    return maxlen;
+}
+
+/**
+ * 删除线性表中值为x的元素
+ * @param L 待处理线性表
+ * @param x 待删除值
+ */
+void delByElem_seqLi(seqList &L, ElemType x) {
+    int k = 0;
+    for (int i = 0; i < L.length; ++i) {
+        if (L.data[i] == x)
+            k++;
+        else {
+            L.data[i - k] = L.data[i];
+        }
+    }
+    L.length = L.length - k;
+}
+
+
+
+
+
+
+
+
+
+
+
+//-------------------------------------------------------------------//
+//测试代码
 
 
 //int main(){
