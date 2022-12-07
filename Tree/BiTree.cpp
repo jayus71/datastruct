@@ -453,3 +453,34 @@ vector<string> BiTreePath(BiTree root) {
     }
     return paths;
 }
+
+/**
+ * 非递归交换左右子树
+ * @param root 二叉树根结点
+ */
+void swapTree(BiTree root) {
+    if (root == nullptr)
+        return;
+    TreeStack s;
+    BiNode *p, *temp;
+    InitStack(s);
+    Push(s, root);
+    while (IsStackEmpty(s)) {
+        Pop(s, p);
+        if (p->lchild || p->rchild) {
+            temp = p->lchild;
+            p->lchild = p->rchild;
+            p->rchild = p->lchild;
+        }
+        if (p->lchild)
+            Push(s, p->lchild);
+        if (p->rchild)
+            Push(s, p->rchild);
+    }
+}
+
+int distance(BiTree T) {
+    if (!T) {
+
+    }
+}
