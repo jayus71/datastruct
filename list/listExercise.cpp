@@ -328,8 +328,130 @@ LNode *sortLinkedList(LinkList L) {
     return mergeLinkedList(left, right);
 }
 
+/**
+ * 删除数据在min和high之间的链表结点
+ * @param L 待处理链表
+ * @param min 下限
+ * @param high 上限
+ */
+void delLinkListByrange(LinkList L, ElemType min, ElemType high) {
+    if (!L)
+        return;
+    LNode *pre = L, *p = L->next, *q;
+    while (p) {
+        if (p->data >= min && p->data <= high) {
+            pre->next = p->next;
+            free(p);
+            p = pre->next;
+        } else {
+            pre = p;
+            p = p->next;
+        }
+    }
+}
 
+/**
+ * 寻找两个链表的公共结点
+ * @param L1
+ * @param L2
+ * @return 公共结点指针
+ */
+LNode *FindCommonNode(LinkList L1, LinkList L2) {
+    if (!L1 || !L2)
+        return nullptr;
+    int dis1 = 0, dis2 = 0;
+    LNode *p1 = L1, *p2 = L2;
+    //求出两个链表的长度
+    //-----------------
+    while (p1) {
+        dis1++;
+        p1 = p1->next;
+    }
+    while (p2) {
+        dis2++;
+        p2 = p2->next;
+    }
+    //-----------------
+    //让长的链表先走dis个结点
+    p1 = L1;
+    p2 = L2;
+    if (dis1 > dis2) {
+        int dis = dis1 - dis2;
+        while (dis > 0) {
+            p1 = p1->next;
+            dis--;
+        }
+    } else if (dis2 > dis1) {
+        int dis = dis2 - dis1;
+        while (dis > 0) {
+            p2 = p2->next;
+            dis--;
+        }
+    }
+    //此时两链表到尾结点的距离相同，同步移动
+    while (p1 && p2) {
+        if (p1 == p2)
+            return p1;
+        p1 = p1->next;
+        p2 = p2->next;
+    }
+    //没有公共结点
+    return nullptr;
+}
 
+/**
+ * 从小到大依次打印并删除结点
+ * @param L 链表头结点指针
+ */
+void printMin2Max(LinkList L) {
+    if (!L->next)
+        return;
+    LNode *pre, *p = L->next;
+    LNode *q, *min, *min_pre;
+    while (p) {
+        q = min = p;
+        pre = L;
+        while (q) {
+            if (min->data < q->data) {
+                min_pre = pre;
+                min = q;
+            }
+            pre = q;
+            q = q->next;
+        }
+        p = L->next;
+        printf("%c", min->data);
+        min_pre->next = min->next;
+        free(min);
+    }
+}
+
+/**
+ * 将La按奇偶分成两个链表
+ * @param La 原链表（奇数链表）头结点指针
+ * @param Lb 偶数链表头结点指针（已分配空间）
+ */
+void separate(LinkList &La, LinkList &Lb) {
+    if (!La)
+        return;
+    LNode *p_raw = La->next, *p_b = Lb;
+    LNode *pre = La;
+    Lb->next = nullptr;
+    while (p_raw) {
+        //数据为奇数，不做处理
+        if (p_raw->data % 2) {
+            pre = p_raw;
+            p_raw = p_raw->next;
+            //数据为偶数，移动到Lb链表
+        } else {
+            //不改变pre的指向
+            p_b->next = p_raw;
+            p_b = p_raw;
+            p_raw = p_raw->next;
+            p_b->next = nullptr;
+        }
+    }
+}
 
 
 
