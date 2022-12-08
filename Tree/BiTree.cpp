@@ -2,9 +2,14 @@
 // Created by Jayus on 2022/10/10.
 //
 //#include <string> //假如我把#include <string>放到#include <vector>之后，就会报错，错误原因未知
+
 #include "BiTree.h"
 #include "../Queue/SqQueue.h"
 #include "../Stack/SqStack.h"
+#include <string>
+
+#include <vector>
+
 //#include <vector>
 
 
@@ -410,8 +415,29 @@ BiNode *FindByOrder(BiTree T, int k) {
     }
 }
 
-#include <string>
-#include <vector>
+/**
+ * 求根结点的两棵子树叶结点的最大距离
+ * @param T 根结点
+ * @param maxDistance 最大距离
+ * @return 返回结点高度（空结点高度为-1），保证算出来是距离
+ */
+int distance(BiTree T, int &maxDistance) {
+    if (!T) {
+        return -1; // 如果是单纯求高度，空结点的高度应该设置为 1
+    }
+    int lDistance = 0, rDistance = 0;
+    int lrDistance = 0;
+
+    lDistance = distance(T->lchild, maxDistance) + 1; // 左子树高度加一
+    rDistance = distance(T->rchild, maxDistance) + 1; // 右子树高度加一
+
+    lrDistance = lDistance + rDistance; //叶结点的距离等于两个子树的高度和
+    maxDistance = maxDistance > lrDistance ? maxDistance : lrDistance; // 更新最大距离
+    return lDistance > rDistance ? lDistance : rDistance; // 返回本结点子树的高度
+}
+//-------------
+//只有把queue移动到这里才不报错
+//-------------
 #include <queue>
 
 /**
@@ -479,8 +505,3 @@ void swapTree(BiTree root) {
     }
 }
 
-int distance(BiTree T) {
-    if (!T) {
-
-    }
-}

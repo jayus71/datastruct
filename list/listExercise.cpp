@@ -241,8 +241,92 @@ void delByElem_seqLi(seqList &L, ElemType x) {
     L.length = L.length - k;
 }
 
+/**
+ * 利用头插法对链表进行排序，先找到整个链表中最大的元素，以头插法插入新链表，
+ * 直到原来的链表为空，由于最大的元素最先被插入，所以保证了正确性，时间复杂度O(n^2)
+ * @param L 链表头指针（带头结点）
+ */
+void sortLinkedList_Head(LinkList &L) {
+    LNode *p = L->next;
+    LNode *q, *pre = L->next;
+    LNode *max = q;
+    L = nullptr;
+    while (p) {
+        q = p;
+        // 寻找链表中最大结点
+        while (q) {
+            if (q->data > max->data)
+                max = q;
+            pre = q;
+            q = q->next;
+        }
+        // 如果最开始的结点就是最大的结点，也即无需更新前驱结点的后继
+        // 直接插入即可
+        if (pre == p) {
+            p = p->next;
+            pre->next = L->next;
+            L->next = pre;
+            // 最大结点在原链表的内部，需要更新前驱
+        } else {
+            pre->next = max->next;
+            max->next = L->next;
+            L->next = max;
+            p = p->next;
+        }
+    }
+}
 
+/**
+ * 链表归并排序中的合并函数，将两个有序链表合并为一个有序链表
+ * @param left 左半部分有序链表(已经切断)
+ * @param right 右半部分有序链表
+ * @return 合并后的有序链并
+ */
+LNode *mergeLinkedList(LinkList left, LinkList right) {
+    auto head = (LNode *) malloc(sizeof(LNode));
+    auto h = head;
+    head->next = nullptr;
+    // 归并过程
+    while (left && right) {
+        if (left->data < right->data) {
+            h->next = left;
+            left = left->next;
+        } else {
+            h->next = right;
+            right = right->next;
+        }
+        h = h->next;
+    }
+    // 将剩余结点连接到尾部
+    h->next = left == nullptr ? right : left;
+    h = head->next;
+    free(head);
+    return h;
+}
 
+/**
+ * 对链表进行归并排序
+ * @param L 待排序链表
+ * @return 排序后的链表头指针
+ */
+LNode *sortLinkedList(LinkList L) {
+    if (L == nullptr || L->next == nullptr)
+        return L;
+    LNode *slow = L, *fast = L->next;
+    LNode *rhead = nullptr;
+    // 利用快慢指针找到链表的中间结点
+    while (fast && fast->next) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    rhead = slow->next;
+    slow->next = nullptr;
+    // slow到达中间结点，以slow划分链表，并断链
+    auto left = sortLinkedList(L);
+    auto right = sortLinkedList(rhead);
+    // 合并链表
+    return mergeLinkedList(left, right);
+}
 
 
 

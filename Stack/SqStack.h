@@ -15,6 +15,7 @@ typedef struct {
 
 void InitStack(SqStack &s);
 
+
 bool IsStackEmpty(SqStack s);
 
 bool IsStackFull(SqStack s);
@@ -31,5 +32,15 @@ bool Push(SqStack &s, BiTree x);
 bool Pop(SqStack &s, BiTree &x);
 
 bool GetTop(SqStack s, BiTree &x);
+
+bool Push(TreeStack &s, BiTree x);
+
+bool Pop(TreeStack &s, BiTree &x);
+
+bool GetTop(TreeStack s, BiTree &x);
+
+bool IsStackEmpty(TreeStack s);
+
+void InitStack(TreeStack &s);
 
 #endif //DATASTRUCT_SQSTACK_H
