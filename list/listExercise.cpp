@@ -6,7 +6,7 @@
 #include "seqList.h"
 #include <stdlib.h>
 #include <cstdio>
-
+#include <map>
 
 int findmin(seqList &List, int &value) {
     int pos = 0;
@@ -452,6 +452,67 @@ void separate(LinkList &La, LinkList &Lb) {
         }
     }
 }
+
+/**
+ * @brief 统计数组中出现的元素重复次数
+ * 
+ * @param array 待统计数组
+ * @param n 数组长度
+ * @return std::map<int,int> 数组元素及其对应次数
+ */
+std::map<int,int> count_1(int *array, int n) {
+    std::map<int, int> map_count;
+    for (int i = 0; i < n; ++i) {
+        map_count[array[i]]++;
+    }
+    return map_count;
+}
+
+/**
+ * @brief 先排序，再统计个数
+ * 
+ * @param array 待处理数组
+ * @param n 数组长度
+ * @return void 
+ */
+void count_2(int array[], int n){
+    bool flag = false;
+    // 先进行排序，再统计个数
+    for (size_t i = n-1; i >= 0; i--)
+    {
+        flag = false;
+        for (size_t j = n - 1; j > i; j--)
+        {
+            if(array[j] < array[j-1]){
+                int temp = array[j];
+                array[j] = array[j-1];
+                array[j-1] = temp;
+                flag = true;
+            }
+        }
+        if(!flag)
+                break;
+    }
+    int temp = array[0];
+    int count = 1;
+    for (size_t i = 1; i < n; i++)
+    {
+        if(temp == array[i])
+            count++;
+        else{
+            printf("%d出现次数：%d",array[i-1],count);
+            temp = array[i];
+            count = 1;
+        }
+    }
+    // 处理最后一个元素
+    if(count > 1){
+         printf("%d出现次数：%d",array[i-1],count);
+    }
+}
+
+
+
 
 
 
