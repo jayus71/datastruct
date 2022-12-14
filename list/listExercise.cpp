@@ -510,8 +510,28 @@ void count_2(int array[], int n){
          printf("%d出现次数：%d",array[i-1],count);
     }
 }
-
-
+/**
+ * @brief 判断两个二叉树（A,B）是否相同（结构和数值）
+ * 
+ * @param A 二叉树 A 的根结点
+ * @param B 二叉树 B 的根结点
+ * @return true 相同
+ * @return false 不相同
+ */
+bool Judge_Same(BiTree A, BiTree B){
+  if(A && B){
+    bool left, right;
+    if(A->data == B->data){
+      left = Judge_Same(A->lchild, B->lchild);
+      right = Judge_Same(A->rchild, B->rchild);
+      return left && right;
+    }else
+      return false;
+  }else if(!A && !B){
+    return true;
+  }else
+    return false;
+}
 
 
 
