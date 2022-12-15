@@ -27,7 +27,7 @@ int Change(int coins[], int amount, int len){
         // 和当前最小值比较
         res = std::min(res,subProblems+1);
     }
-    return res;
+    return (res == 999)? -1: res;
 }
 
 /**
@@ -74,11 +74,21 @@ int dp_change_memo(int coins[], int amount, int len){
     return memo_change[amount];
 }
 
+/**
+ * @brief 求数组中最长递增子序列（可以不连续）
+ * 使用dp数组：dp[i]的含义是，以nums[i]结尾的最长递增子序列的长度
+ * @param nums 待处理数组
+ * @param len 数组长度
+ * @return int 最长递增子序列长度
+ */
 int LengthOfLIS(int nums[], int len){
     int dp[MAXSIZE];
+    // base case：每个元素的最长递增子序列至少包含自己，即为1
     for(int i = 0; i < len; i++){
         dp[i] = 1;
     }
+    // 遍历一边数组，对nums[i]找之前的比nums[i]小的nums[j]
+    // 找到最长的递增子序列（nums[j]+1的最大值）
     for(int i = 0; i < len; i++){
         for(int j = 0; j < i; j++){
             if(nums[j] < nums[i]){
@@ -87,9 +97,11 @@ int LengthOfLIS(int nums[], int len){
         }
     }
     int res = -999;
+    // 此时dp中存的是以对应元素结尾的最大递增子序列长度
     for(int i = 0; i < len; i++){
         if(res < dp[i])
             res = dp[i];
     }
     return res;
 }
+
