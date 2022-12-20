@@ -505,3 +505,21 @@ void swapTree(BiTree root) {
     }
 }
 
+void BSTInsert(BiTree &T, ElemType x){
+    if(T){
+        if(T->data == x)
+            return;
+        else if (T->data > x)
+        {
+            return BSTInsert(T->lchild,x);
+        }else if (T->data < x)
+        {
+            return BSTInsert(T->rchild,x);
+        }
+    }else{
+        T = (BiNode*)malloc(sizeof(BiNode));
+        T->lchild = T->rchild = nullptr;
+        T->data = x;
+        return;
+    }
+}
