@@ -5,7 +5,8 @@
 #include "base.h"
 
 void swap(ElemType &a, ElemType &b) {
-    ElemType temp = a;
+    ElemType temp = a; 
     a = b;
     b = temp;
 }
+
