@@ -8,6 +8,7 @@ int main(int argc, char const *argv[])
     // int *p ;
     // //*p = 100;
     // printf("old: %d\n",(*p));
+    
     // f(p);
     // printf("new: %d\n",(*p));
     int a[3][4];
@@ -26,4 +27,6 @@ int main(int argc, char const *argv[])
     // c语言按行优先存储，二维数组实质上也是按一维数组存储的
     // 所以a[1][4] 实质上就是 a[2][0]
     printf("a[1][4]:%d\n",a[1][4]);
+    system("pause");
+    return 0;
 }
